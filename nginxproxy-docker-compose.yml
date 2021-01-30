@@ -1,0 +1,31 @@
+version: "3"
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginxproxy
+    restart: always
+    ports:
+      # Public HTTP Port:
+      - '180:80'
+      # Public HTTPS Port:
+      - '1443:443'
+      # Admin Web Port:
+      - '181:81'
+    environment:
+      # These are the settings to access your db
+      #DB_MYSQL_HOST: "db"
+      #DB_MYSQL_PORT: 3306
+      #DB_MYSQL_USER: "npm"
+      #DB_MYSQL_PASSWORD: "npm"
+      #DB_MYSQL_NAME: "npm"
+      # If you would rather use Sqlite uncomment this
+      # and remove all DB_MYSQL_* lines above
+      DB_SQLITE_FILE: "/data/database.sqlite"
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+networks:
+  default:
+    name: mmain_net
