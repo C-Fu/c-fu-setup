@@ -1,0 +1,18 @@
+version: "3.6"
+services:
+    organizr:
+        container_name: organizr
+        hostname: organizr
+        image: organizr/organizr:latest
+        restart: unless-stopped
+        ports:
+            - 88:80
+        volumes:
+            - ./config:/config
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Asia/Kuala_Lumpur
+networks:
+  default:
+    name: main_net
