@@ -39,4 +39,4 @@ echo "[nginxproxy] deployed at $IP:181. Port-forward port 80 and 443 to $IP:180 
 
 echo "ALL DONE!"
 docker ps
-pause
+exit
