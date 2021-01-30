@@ -28,4 +28,4 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 networks:
   default:
-    name: mmain_net
+    name: main_net
