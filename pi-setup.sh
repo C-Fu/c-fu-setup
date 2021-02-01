@@ -11,9 +11,7 @@ sudo usermod -aG docker dietpi #just in case
 sudo apt install -y libffi-dev libssl-dev python3 python3-pip
 sudo apt remove -y python-configparser
 echo "Installing Docker Compose. Will take some time..."
-sudo pip3 -v install docker-compose | \
-echo "[Docker]         install : DONE!"
-echo "[Docker Compose] install : DONE!"
+sudo pip3 -v install docker-compose | echo "[Docker]         install : DONE!" && echo "[Docker Compose] install : DONE!"
 
 #Install Portainer
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce | \
