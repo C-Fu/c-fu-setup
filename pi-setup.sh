@@ -1,7 +1,7 @@
 #!/bin/bash
 IP=`hostname  -I | cut -f1 -d' '`
 
-TITLE="\n\n\e[33m[-------------------------------------]\n[-----------Pi Setup Script-----------]\n[-----------------C-Fu----------------]\n\n"
+TITLE="\e[43m\n\n\e[30m[-------------------------------------]\n[-----------Pi Setup Script-----------]\n[-----------------C-Fu----------------]\n\n"
 echo -e $TITLE
 
 #Install docker
@@ -26,7 +26,7 @@ echo "Installing rclone..."
 curl https://rclone.org/install.sh | sudo bash       && \
 echo -e "\n\n"                                       && \
 echo -e "\e[33m[RClone]         install : DONE!"     || \
-instRClone=1 && echo -e "\n\n\e[31m[RClone]      install : FAILED!"  && \
+                                                     instRClone=1 && echo -e "\n\n\e[31m[RClone]      install : FAILED!"  && \
 echo -e "\n\n"
 
 #Install Portainer
@@ -42,7 +42,8 @@ sudo docker pull organizr/organizr:latest        && echo -e "\e[33m[Organizr]   
 sudo docker pull jc21/nginx-proxy-manager:latest && echo -e "\e[33m[Nginx Proxy Manager] pulled"
 
 echo -e "\e[33mReady to start!"
-echo -e "\e[33mCreating directories"
+echo -e "\n\n"
+echo -e "\e[33mCreating container directories from inside $PWD"
 mkdir ~/organizr   && echo -e "\e[33m[organizr]   folder created" || echo -e "\e[31m[organizr] folder cannot be created... it exists?"
 mkdir ~/nginxproxy && echo -e "\e[33m[nginxproxy] folder created" || echo -e "\e[31m[nginxproxy] folder cannot be created... it exists?"
 
