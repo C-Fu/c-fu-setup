@@ -7,24 +7,26 @@ services:
     image: wordpress
     restart: always
     ports:
-      - 8484:80
+      - 8080:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: wpdb
+      WORDPRESS_DB_NAME: wordpressdb
     volumes:
-      - $(PWD)/wordpress/html:/var/www/html
+      - $HOME/wordpress/html:/var/www/html
 
   db:
     container_name: wordpress-db
-    image: mysql:5.7
+    image: ghcr.io/linuxserver/mariadb
     restart: always
     environment:
-      MYSQL_DATABASE: wpdb
+      MYSQL_DATABASE: wordpressdb
       MYSQL_USER: exampleuser
       MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-      
+      MYSQL_ROOT_PASSWORD: superpass
     volumes:
-      - db:$(PWD)/wordpress/mysql
+      - $HOME/wordpress/db:/var/lib/mysql
+networks:
+  default:
+    name: web_net
