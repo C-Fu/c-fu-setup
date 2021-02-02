@@ -1,11 +1,13 @@
-# c-fu-setup
-Collection of basic pi setup - docker, portainer, etc.
-Except for docker, all of the containers are cross-platform - x86 and ARM friendly! And are regularly maintained.
+# C-Fu's Setup script
+Collection of basic app setup - docker, portainer, sonarr, nextcloudpi, etc.
+Except for docker, all(most) of the containers are cross-platform - x86 and ARM friendly! And are regularly maintained.
+
+**Supported architecture: x64, arm (and x86?)
 
 Current software list:
 
-- Docker | Containerize your apps
-- Docker Compose | Easily spin up and down your containers, as well as to help ease migration
+- Docker | containerize your apps
+- Docker Compose | easily spin up and down your containers, as well as to help ease migration
 - RClone | mount your cloud storage easily
 - Portainer | manage your container the pro way
 - Nginx Proxy Manager | add ssl to your DDNS url!
@@ -17,6 +19,8 @@ Current software list:
 - Jackett | organize your media sources
 - ruTorrent | Torrent downloader for *arr+Jackett
 - Afraid.org | set up a quick cron job, but get your DDNS url+key first!
+- Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone)
+- NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing!
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
 ## You might want/need to change it, especially the environment parameters. 
@@ -39,13 +43,20 @@ $ cd $HOME/c-fu-setup
 
 You can set up the mysql's user password from here.
 
+## Docker network notes:
+For organizational purposes, currently the containers are put in several networks:
+- media_net : For media-based containers, like ruTorrent, Sonarr, Jackett
+- web_net : For general web-based apps, like nextcloudpi, Wordpress and NginxProxyManager
+
+## Installation instruction
 
 Just run the pi-setup.sh script:
 
 ```
-cd ~
+cd $HOME
 git clone https://github.com/C-Fu/c-fu-setup.git
-cd pi-setup
-sudo chmod +x pi-setup.sh
-sudo ./pi-setup.sh
+cd c-fu-setup
+chmod +x c-fu-setup.sh
+## Be sure to check the *-docker-compose.yml file and edit if necessary
+bash c-fu-setup.sh
 ```
