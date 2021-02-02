@@ -42,6 +42,7 @@ instLidarr="NO"
 instJackett="NO"
 instruTorrent="NO"
 instNavidrome="NO"
+instNextcloudpi="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
@@ -70,6 +71,7 @@ cmd=(dialog --separate-output
      Jackett - organize your media sources
      ruTorrent - Torrent downloader for *arr+Jackett
      Navidrome - web-based music player
+	 Nextcloudpi - awesome office collaboration suite
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -85,7 +87,8 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          11 "[Docker] Jackett - your media download finder"              off
          12 "[Docker] ruTorrent - your Torrent downloader "              off
          13 "[Docker] Navidrome - web-based music player & server"       off
-         
+		 14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
+         15 "[Docker] Nothing,placeholder" off
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -415,9 +418,38 @@ do
             "
             #instJackett="NO" #temp
             ###Assign variables and indirect variables###
-            containerName="navdrome"
+            containerName="navidrome"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
             containerRepo="deluan/"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
+        14)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [       Installing NextCloudPi       ]
+            [------------------------------------]
+            "
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="nextcloudpi"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerRepo="ownyourbits/"
             #set installVar to whatever inst$containerNiceName value is
             declare -n installVar=inst$containerNiceName
             
