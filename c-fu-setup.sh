@@ -43,6 +43,7 @@ instJackett="NO"
 instruTorrent="NO"
 instNavidrome="NO"
 instNextcloudpi="NO"
+instOverseerr="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
@@ -72,6 +73,7 @@ cmd=(dialog --separate-output
      ruTorrent - Torrent downloader for *arr+Jackett
      Navidrome - web-based music player
 	 Nextcloudpi - awesome office collaboration suite
+	 Overseerr - Request your movies & tv shows from here
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -88,7 +90,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          12 "[Docker] ruTorrent - your Torrent downloader "              off
          13 "[Docker] Navidrome - web-based music player & server"       off
 		 14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
-         15 "[Docker] Nothing,placeholder" off
+         15 "[Docker] Overseerr - media requests management"             off
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -468,6 +470,35 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
+        15)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [        Installing Overseerr        ]
+            [------------------------------------]
+            "
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="overseerr"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerRepo="hotio/"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
     esac
 done
 
@@ -589,6 +620,15 @@ if [ "instruTorrent" = "1" ]; then
              \e[34m56881\e[39m - tcp&udp port for downloading
              \e[34m580\e[39m   - WebUI port, not necessary unless you want public access (DANGER!)
              Access via web browser at \e[34m$IP:580\e[39m" 
+fi
+
+if [ "$instNextcloudpi" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[NextCloudPi]\e[39m deployed at \e[34m$IP:44443\e[39m.
+             Visit \e[34m$IP:44443\e[39m to set up your NCP before going to \e[34m$IP:4443\e[39m"  
+fi
+
+if [ "$instOverseerr" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[Overseerr]\e[39m deployed at \e[34m$IP:5055\e[39m."  
 fi
 
 exit
