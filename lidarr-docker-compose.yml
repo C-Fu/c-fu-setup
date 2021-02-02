@@ -14,3 +14,6 @@ services:
     ports:
       - 8686:8686
     restart: unless-stopped
+networks:
+  default:
+    name: media_net
