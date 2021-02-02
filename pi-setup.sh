@@ -27,17 +27,17 @@ echo -e "\e[5m\n\n
 sleep 2
 clear
 #Clear vars
-instDocker=0
-instDockerCompose=0
-instRClone=0
-instPortainer=0
-instNginxProxy=0
-instOrganizr=0
-instWordPress=0
-instRadarr=0
-instSonarr=0
-instJackett=0
-instruTorrent=0
+instDocker=NO
+instDockerCompose=NO
+instRClone=NO
+instPortainer=NO
+instNginxProxy=NO
+instOrganizr=NO
+instWordPress=NO
+instRadarr=NO
+instSonarr=NO
+instJackett=NO
+instruTorrent=NO
 
 containerName="hello-world"
 containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
@@ -149,16 +149,27 @@ do
             [    Installing NginxProxyManager    ]
             [------------------------------------]
             "
-            sudo docker pull jc21/nginx-proxy-manager:latest && echo -e "\e[33m[Nginx Proxy Manager] pulled" || echo -e "\e[31m[NginxProxyManager] cannot be downloaded!"   && instNginxProxy=0
-            echo -e "\e[33mCreating NginxProxyManager container directories from inside $PWD"
-            mkdir ~/nginxproxy && echo -e "\e[33m[nginxproxy] folder created"   || echo -e "\e[31m[nginxproxy] folder cannot be created... it exists?"                      && instNginxProxy=0
-            cp nginx-proxy-docker-compose.yml ~/nginxproxy/docker-compose.yml   || echo -e "\e[31m[nginxproxy] yml cannot be created... it doesn't exist?"                  && instNginxProxy=0
-            cd ~/nginxproxy && docker-compose up -d && instNginxProxy=1         || echo -e "\e[31m[nginxproxy] container cannot be started! Check docker-compose.yml!"      && instNginxProxy=0
-            if [ "$instNginxProxy"="1" ]; then
-                echo -e "\e[33m[NginxProxyManager] is UP!\n[nginxproxy] deployed - View via browser at $IP:181. Your IP is $IP. Port-forward/Add virtual server port 80 and 443 to $IP:180 and $IP:1443 \nfrom inside your router's WebUI page \nUsually at 192.168.0.1 or 192.168.1.1 or 192.168.0.254"
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="nginx-proxy-manager"
+            containerRepo="jc21/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
-                echo -e "\e[31m[NginxProxyManager] cannot be started! Check the docker-compose file!" 
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
             ;;
         5)
             echo -e "\n\n\e[33m
@@ -166,16 +177,26 @@ do
             [        Installing Organizr         ]
             [------------------------------------]
             "
-            sudo docker pull organizr/organizr:latest        && echo -e "\e[33m[Organizr]            pulled" || echo -e "\e[31m[Organizr] cannot be downloaded!"   && instOrganizr=0
-            echo -e "\e[33mCreating container directories from inside $PWD"
-            mkdir ~/organizr   && echo -e "\e[33m[organizr]   folder created"   || echo -e "\e[31m[organizr] folder cannot be created... it exists?"                        && instOrganizr=0
-            cp organizr-docker-compose.yml ~/organizr/docker-compose.yml        || echo -e "\e[31m[organizr] yml cannot be created... it doesn't exist?"
-            cd ~/organizr && docker-compose up -d && instOrganizr=1             || echo -e "\e[31m[organizr] container cannot be started! Check docker-compose.yml!"        && instOrganizr=0
-            if [ "$instOrganizr"="1" ]; then
-                echo -e "\e[33m[Organizr] is UP!\n[organizr] deployed - View via browser at $IP:88. \n Your IP is $IP. Port-forward/Add virtual server port 80 to $IP:88  \nfrom inside your router's WebUI page \nUsually at 192.168.0.1 or 192.168.1.1 or 192.168.0.254"
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="organizr"
+            containerRepo="organizr/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
-                echo -e "\e[31m[Organizr] cannot be started! Check the docker-compose file!" 
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
         6)
@@ -184,16 +205,26 @@ do
             [        Installing WordPress        ]
             [------------------------------------]
             "
-            sudo docker pull wordpress:latest        && echo -e "\e[33m[WordPress]            pulled" || echo -e "\e[31m[WordPress] cannot be downloaded!"                  && instWordPress=0
-            echo -e "\e[33mCreating container directories from inside $PWD"
-            mkdir ~/wordpress   && echo -e "\e[33m[WordPress]   folder created" || echo -e "\e[31m[wordpress] folder cannot be created... it exists?"                       && instWordPress=0
-            cp wordpress-docker-compose.yml ~/wordpress/docker-compose.yml      || echo -e "\e[31m[wordpress] yml cannot be created... it doesn't exist?"
-            cd ~/wordpress && docker-compose up -d && instWordPress=1           || echo -e "\e[31m[wordpress] container cannot be started! Check docker-compose.yml!"       && instWordPress=0
-            if [ "$instWordPress"="1" ]; then
-                echo -e "\e[33m[WordPress] is UP!\n[wordpress] deployed - View via browser at $IP:8484. \n Your IP is $IP. Port-forward/Add virtual server port 8484 to $IP:8484  \nfrom inside your router's WebUI page \nUsually at 192.168.0.1 or 192.168.1.1 or 192.168.0.254"
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="wordpress"
+            containerRepo=
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
-                echo -e "\e[31m[WordPress] cannot be started! Check the docker-compose file!" 
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
         7)
@@ -202,16 +233,26 @@ do
             [          Installing Radarr         ]
             [------------------------------------]
             "
-            sudo docker pull ghcr.io/linuxserver/radarr:latest && echo -e "\e[33m[Radarr]            pulled" || echo -e "\e[31m[Radarr] cannot be downloaded!"          && instRadarr=0
-            echo -e "\e[33mCreating container directories from inside $PWD"
-            mkdir ~/radarr   && echo -e "\e[33m[Radarr]   folder created"    || echo -e "\e[31m[radarr] folder cannot be created... it exists?"                         && instRadarr=0
-            cp radarr-docker-compose.yml ~/radarr/docker-compose.yml         || echo -e "\e[31m[radarr] yml cannot be created... it doesn't exist?"
-            cd ~/radarr && docker-compose up -d && instRadarr=1              || echo -e "\e[31m[radarr] container cannot be started! Check docker-compose.yml!"         && instRadarr=0
-            if [ "$instRadarr"="1" ]; then
-                echo -e "\e[33m[Radarr] is UP!\n[wordpress] deployed - View via browser at $IP:7878. \n Your IP is $IP. Port-forward/Add virtual server port 7878 to $IP:7878  \nfrom inside your router's WebUI page \nUsually at 192.168.0.1 or 192.168.1.1 or 192.168.0.254"
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="radarr"
+            containerRepo="ghcr.io/linuxserver/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
-                echo -e "\e[31m[Radarr] cannot be started! Check the docker-compose file!" 
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;          
         8)
@@ -220,16 +261,26 @@ do
             [          Installing Sonarr         ]
             [------------------------------------]
             "
-            sudo docker pull ghcr.io/linuxserver/sonarr:latest && echo -e "\e[33m[Sonarr] pulled" || echo -e "\e[31m[Sonarr] cannot be downloaded!"                     && instSonarr=0
-            echo -e "\e[33mCreating container directories from inside $PWD"
-            mkdir ~/sonarr   && echo -e "\e[33m[Sonarr]   folder created" || echo -e "\e[31m[sonarr] folder cannot be created... it exists?"                            && instSonarr=0
-            cp sonarr-docker-compose.yml ~/sonarr/docker-compose.yml         || echo -e "\e[31m[sonarr] yml cannot be created... it doesn't exist?"
-            cd ~/sonarr && docker-compose up -d && instSonarr=1              || echo -e "\e[31m[sonarr] container cannot be started! Check docker-compose.yml!"         && instSonarr=0
-            if [ "$instSonarr"="1" ]; then
-                echo -e "\e[33m[Sonarr] is UP!\n[jackett] deployed - View via browser at $IP:7878. \n Your IP is $IP. Port-forward/Add virtual server port 7878 to $IP:7878  \nfrom inside your router's WebUI page \nUsually at 192.168.0.1 or 192.168.1.1 or 192.168.0.254"
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="sonarr"
+            containerRepo="ghcr.io/linuxserver/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
-                echo -e "\e[31m[Sonarr] cannot be started! Check the docker-compose file!" 
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
         9)
@@ -238,7 +289,7 @@ do
             [         Installing Jackett         ]
             [------------------------------------]
             "
-            instJackett="NO" #temp
+            #instJackett="NO" #temp
             ###Assign variables and indirect variables###
             containerName="jackett"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
@@ -248,11 +299,11 @@ do
             
             ###Begin###
             docker pull "$containerRepo$containerName" && \
-            echo -e "\e[33m[$containerNiceName]\e[39m pulled"									|| echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
             echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
             mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
             cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
-            cd ~/$containerName && docker-compose up -d && installVar="YES"						|| echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
             if [ "$installVar"="YES" ]; then
                 echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
@@ -277,7 +328,7 @@ echo -e "\n\e[32m
 #SCRIPT CHECK AND INFO DISPLAY
 
 ###Docker###
-if [ "instDocker" = "1" ] ; then 
+if [ "instDocker" = "YES" ] ; then 
   echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using 
              \e[33mdocker run -d --name something -p hostportno:containerport 
              -v hostdir:containerdir repo/container\e[39m (one line)
@@ -285,7 +336,7 @@ if [ "instDocker" = "1" ] ; then
 fi
 
 ###Docker Compose###
-if [ "instDockerCompose" = "1" ];then
+if [ "instDockerCompose" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[Docker Compose]\e[39m can be run by 
              editing your \e[33mdocker-compose.yml\e[39m file, then do 
              \e[33mdocker-compose up -d\e[39m to start, or 
@@ -293,19 +344,19 @@ if [ "instDockerCompose" = "1" ];then
 fi
 
 ###RClone###
-if [ "instRClone" = "1" ];then
+if [ "instRClone" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[RClone]\e[39m can be run by using
              \e[33mrclone config\e[39m, and then \e[33mrclone cp\e[39m, \e[33mrclone mv\e[39m, 
              \e[33mrclone lsd\e[39m, \e[33mrclone ls\e[39m, \e[33mrclone mount\e[39m."
 fi
 
 ###Portainer###
-if [ "instPortainer" = "1" ];then
+if [ "instPortainer" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[portainer]\e[39m deployed at \e[34m$IP:9000\e[39m."
 fi
 
 ###NginxProxyManager###
-if [ "instNginxProxy" = "1" ];then
+if [ "instNginxProxy" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.  
              Your IP is \e[34m$IP\e[39m.  
              Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m   
@@ -314,7 +365,7 @@ if [ "instNginxProxy" = "1" ];then
 fi
 
 ###Organizr###
-if [ "instOrganizr" = "1" ]; then
+if [ "instOrganizr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
              Port-forward/Add virtual server   
              port \e[34m80\e[39m to \e[34m$IP:88\e[39m  
@@ -323,7 +374,7 @@ if [ "instOrganizr" = "1" ]; then
 fi 
 
 ###WordPress###
-if [ "instWordPress" = "1" ]; then
+if [ "instWordPress" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[wordpress]\e[39m deployed at \e[34m$IP:8484\e[39m.   
              Port-forward/Add virtual server   
              port \e[34m8484\e[39m to \e[34m$IP:8484\e[39m  
@@ -332,7 +383,7 @@ if [ "instWordPress" = "1" ]; then
 fi 
 
 ###Radarr###
-if [ "instRadarr" = "1" ]; then
+if [ "instRadarr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Radarr]\e[39m deployed at \e[34m$IP:7878\e[39m.   
              Port-forward/Add virtual server   
              port \e[34m7878\e[39m to \e[34m$IP:7878\e[39m  
@@ -341,7 +392,7 @@ if [ "instRadarr" = "1" ]; then
 fi
 
 ###Sonarr###
-if [ "instSonarr" = "1" ]; then
+if [ "instSonarr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Sonarr]\e[39m deployed at \e[34m$IP:8989\e[39m.   
              Port-forward/Add virtual server   
              port \e[34m8989\e[39m to \e[34m$IP:8989\e[39m  
