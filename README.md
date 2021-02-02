@@ -8,7 +8,8 @@ Example:
 
 
 ```
-$ cat wordpress-docker-compose.yml
+$ cd $HOME/pi-setup
+~/pi-setup$ cat wordpress-docker-compose.yml
 .
 .
 .
