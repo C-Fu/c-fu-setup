@@ -7,7 +7,7 @@ services:
     command: "${IP}"
     ports:
      - "480:80"
-     - "443:443"
+     - "4443:443"
      - "44443:4443"
     volumes:
      - $HOME/nextcloudpi/data:/data
