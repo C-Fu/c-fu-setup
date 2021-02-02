@@ -7,13 +7,13 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - ~/config:/config
-      - ~/downloads:/downloads
+      - $HOME/config:/config
+      - $HOME/downloads:/downloads #move from downloads to this permanent folder
     ports:
-      - 580:80
-      - 5000:5000
-      - 51413:51413
-      - 56881:6881/udp
+      - 580:80 #80 port is too generic, might interfere with other services
+      - 5000:5000 #scgi port?
+      - 56881:51413 #tcp port to download
+      - 56881:6881/udp #port forward whatever host port tothe 56881 container port
     restart: unless-stopped
 networks:
   default:
