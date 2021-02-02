@@ -6,7 +6,7 @@
 ## Description: Automate fresh pi    ##
 ##   installs, make it easier to     ##
 ##   find common containers          ##
-##   suitable for arm/pi             ##
+##   compatible for arm/pi and x86   ##
 ##   Containers are cross-platform   ##
 ##                                   ##
 ## Note: Code designed for           ##
@@ -16,15 +16,15 @@
 
 clear
 
-echo -e "\e[5m\n\n
-[--------------------------------------]
-[----------- \e[7mPi Setup Script\e[0m-----------]
-[---------------- \e[7mby C-Fu\e[0m--------------]
-[----Make sure to git clone to $HOME/pi-setup!----]
-[--------------------------------------]
+echo -e "\e[7m\n\n
+[----------------------------------------------------]
+[------------------ Pi Setup Script------------------]
+[------------------- \e[7mby C-Fu--------------------]
+[----Make sure to git clone to \$HOME/c-fu-setup!----]
+[----------------------------------------------------]
 \e[0m"
 
-sleep 2
+sleep 3
 clear
 
 #Reset vars
@@ -37,21 +37,22 @@ instOrganizr="NO"
 instWordpress="NO"
 instRadarr="NO"
 instSonarr="NO"
+instLidarr="NO"
 instJackett="NO"
 instruTorrent="NO"
 
 #init vars"
-scriptDir="$HOME/pi-setup"
-IP=`hostname  -I | cut -f1 -d' '`
+scriptDir="$HOME/c-fu-setup"
+IP=`hostname  -I | cut -f1 -d' '` #get first IP
 
 containerName="hello-world"
 containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
-containerRepo=
+containerRepo= #nothing
 
 
 
 cmd=(dialog --separate-output 
-     --title "C-Fu's Pi setup script for common apps"
+     --title "C-Fu's Setup script for common apps"
      --checklist "Select software to install/update:
      (WARNING: DO NOT RE-INSTALL DOCKER & DOCKER-COMPOSE THIS WAY!
      Docker - Containerize your apps, it's the future!
@@ -60,18 +61,26 @@ cmd=(dialog --separate-output
      NginxProxyManager - add ssl to your DDNS!
      Organizr - your personal start page to all of your web apps
      WordPress - host your site from your house!
+     Radarr - organize your Movie files
+     Sonarr - organize your TVShows files
+     Lidarr - organize your Music files
+     Jackett - organize your media sources
+     ruTorrent - Torrent downloader for *arr+Jackett
+	 Afraid.org - set up a quick cron job, get your DDNS url+key first!
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
-         2  "RClone - mount your GDrive One Drive MEGA AWS WEBDav etc" off
-         3  "[Docker] Portainer - manage containers" off
+         2  "RClone - mount your GDrive One Drive MEGA AWS WEBDav etc"   off
+         3  "[Docker] Portainer - manage containers"                     off
          4  "[Docker] NginxProxyManager - reverse-proxy your containers" off
-         5  "[Docker] Organizr - your personal start page" off
-         6  "[Docker] WordPress - biggest site creator" off
-         7  "[Docker] Radarr - your movie organizer " off
-         8  "[Docker] Sonarr - your tv shows organizer " off
-         9  "[Docker] Jackett - your media download finder" off
-         10 "[Docker] ruTorrent - your Torrent downloader " off
+         5  "[Docker] Organizr - your personal start page"               off
+         6  "[Docker] WordPress - biggest site creator"                  off
+         7  "[Docker] Radarr - your movie organizer "                    off
+         8  "[Docker] Sonarr - your tv shows organizer "                 off
+	     9  "[Docker] Lidarr - your music organizer "                    off
+         10 "[Docker] Jackett - your media download finder"              off
+         11 "[Docker] ruTorrent - your Torrent downloader "              off
+		 12 "Afraid.org - stupidly simple & free DDNS url!" (soon!)      off
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -301,6 +310,34 @@ do
         9)
             echo -e "\n\n\e[33m
             [------------------------------------]
+            [          Installing Lidarr         ]
+            [------------------------------------]
+            "
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="lidarr"
+            containerRepo="ghcr.io/linuxserver/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
+        10)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
             [         Installing Jackett         ]
             [------------------------------------]
             "
@@ -327,7 +364,7 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        10)
+        11)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [        Installing ruTorrent        ]
@@ -356,13 +393,13 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        11)
+        12)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [     Installing afraid.org DDNS     ]
             [------------------------------------]
             "
-            
+            #Probably later...
 			sleep 2
             ;;
     esac
