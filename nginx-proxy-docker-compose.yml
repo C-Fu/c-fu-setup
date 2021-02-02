@@ -24,8 +24,8 @@ services:
       # Uncomment this if IPv6 is not enabled on your host
       # DISABLE_IPV6: 'true'
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - $HOME/nginxproxymanager/data:/data
+      - $HOME/nginxproxymanager/letsencrypt:/etc/letsencrypt
 networks:
   default:
-    name: main_net
+    name: web_net
