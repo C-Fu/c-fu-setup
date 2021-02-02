@@ -3,6 +3,7 @@ services:
   sonarr:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -13,7 +14,6 @@ services:
       - $HOME/downloads:/downloads
     ports:
       - 8989:8989
-    restart: unless-stopped
 networks:
   default:
     name: media_net
