@@ -12,7 +12,7 @@ options=(1 "Docker & Docker Compose - containerize your applications" off    # a
          3 "[Docker] Portainer" off
          4 "[Docker] NginxProxyManager" off
          5 "[Docker] Organizr" off
-         6 "[Docker] WordPress (Not yet)" off
+         6 "[Docker] WordPress (Not yet)" off)
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
