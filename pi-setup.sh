@@ -39,9 +39,10 @@ instSonarr=NO
 instJackett=NO
 instruTorrent=NO
 
+#init vars"
 containerName="hello-world"
 containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
-containerRepo="."
+containerRepo=
 
 
 cmd=(dialog --separate-output 
@@ -61,7 +62,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          3  "[Docker] Portainer - manage containers" off
          4  "[Docker] NginxProxyManager - reverse-proxy your containers" off
          5  "[Docker] Organizr - your personal start page" off
-         6  "[Docker] WordPress (Not yet)" off
+         6  "[Docker] WordPress - biggest site creator" off
          7  "[Docker] Radarr - your movie organizer " off
          8  "[Docker] Sonarr - your tv shows organizer " off
          9  "[Docker] Jackett - your media download finder" off
@@ -323,6 +324,17 @@ echo -e "\n\e[32m
 \e[39m\n"
 #echo -e "\e[32mCheck running containers..."
 #docker ps
+echo "instDocker=        $instDocker"
+echo "instDockerCompose= $instDockerCompose"
+echo "instRClone=        $instRClone"
+echo "instPortainer=     $instPortainer"
+echo "instNginxProxy=    $instNginxProxy"
+echo "instOrganizr=      $instOrganizr"
+echo "instWordPress=     $instWordPress"
+echo "instRadarr=        $instRadarr"
+echo "instSonarr=        $instSonarr"
+echo "instJackett=       $instJackett"
+echo "instruTorrent=     $instruTorrent"
 
 
 #SCRIPT CHECK AND INFO DISPLAY
