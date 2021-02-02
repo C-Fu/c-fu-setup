@@ -1,0 +1,16 @@
+version: '3'
+services:
+  nextcloudpi:
+    container_name: nextcloudpi
+    image: ownyourbits/nextcloudpi-x86
+    command: "${IP}"
+    ports:
+     - "480:80"
+     - "443:443"
+     - "44443:4443"
+    volumes:
+     - $HOME/nextcloudpi/data:/data
+     - /etc/localtime:/etc/localtime:ro
+networks:
+  default:
+    name: web_net
