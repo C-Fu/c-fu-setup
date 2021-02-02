@@ -4,29 +4,8 @@ IP=`hostname  -I | cut -f1 -d' '`
 TITLE="\e[43m\n\n\e[30m[-------------------------------------]\n[-----------Pi Setup Script-----------]\n[-----------------C-Fu----------------]\n\n"
 echo -e $TITLE
 
-PS3='\e[33mSelect your choices: '
-options=("Docker & Docker Compose - containerize your applications" "RClone - mount your cloud storage - GDrive, One Drive, MEGA, AWS, WEBDav, etc" \ 
-   "Docker Apps - Selection of Docker Apps" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Docker & Docker Compose - containerize your applications")
-            echo "Docker"
-            ;;
-        "RClone - mount your cloud storage - GDrive, One Drive, MEGA, AWS, WEBDav, etc")
-            echo "RClone"
-            ;;
-        "Docker Apps - Selection of Docker Apps")
-            echo "you chose choice $REPLY which is $opt"
-            ;;
-        "Quit")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
-done
+sleep 3
 
-#!/bin/bash
 cmd=(dialog --separate-output --checklist "Select options:" 22 76 16)
 options=(1 "Docker & Docker Compose - containerize your applications" off    # any option can be set to default to "on"
          2 "RClone - mount your cloud storage - GDrive, One Drive, MEGA, AWS, WEBDav, etc" off
