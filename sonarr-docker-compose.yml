@@ -8,9 +8,9 @@ services:
       - PGID=1000
       - TZ=Asia/Kuala_Lumpur
     volumes:
-      - data:/config
-      - ~/media/tvshows:/tv #Move from downloads to this permanent folder
-      - ~/downloads:/downloads
+      - $HOME/sonarr/data:/config
+      - $HOME/media/tvshows:/tv #Move from downloads to this permanent folder
+      - $HOME/downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
