@@ -1,7 +1,9 @@
 version: "3"
 services:
   navidrome:
+    container_name: navidrome
     image: deluan/navidrome:latest
+    restart: unless-stopped
     ports:
       - "4533:4533"
     environment:
