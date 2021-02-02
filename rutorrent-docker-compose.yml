@@ -1,0 +1,20 @@
+version: "2.1"
+services:
+  rutorrent:
+    image: ghcr.io/linuxserver/rutorrent
+    container_name: rutorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - rutorrent/config:/config
+      - $(PWD)/downloads:/downloads
+    ports:
+      - 580:80
+      - 5000:5000
+      - 51413:51413
+      - 56881:6881/udp
+    restart: unless-stopped
+networks:
+  default:
+    name: media_net
