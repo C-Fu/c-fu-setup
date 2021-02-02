@@ -7,8 +7,8 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - rutorrent/config:/config
-      - $(PWD)/downloads:/downloads
+      - ~/config:/config
+      - ~/downloads:/downloads
     ports:
       - 580:80
       - 5000:5000
