@@ -21,6 +21,7 @@ Current software list:
 - Afraid.org | set up a quick cron job, but get your DDNS url+key first!
 - Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone)
 - NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing!
+- Overseerr | Request your movies & tv shows from here
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
 ## You might want/need to change it, especially the environment parameters. 
