@@ -8,9 +8,9 @@ services:
       - PGID=1000
       - TZ=Asia/Kuala_Lumpur
     volumes:
-      - data:/config
-      - ~/media/Movies:/movies #move from downloads to this permanent folder
-      - ~/downloads:/downloads
+      - $HOME/radarr/data:/config
+      - $HOME/media/Movies:/movies #move from downloads to this permanent folder
+      - $HOME/downloads:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
