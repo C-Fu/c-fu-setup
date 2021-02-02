@@ -5,7 +5,7 @@ services:
   wordpress:
     container_name: wordpress
     image: wordpress
-    restart: always
+    restart: unless-stopped
     ports:
       - 8484:80 #8080 port is too generic, might interfere with other services
     environment:
@@ -19,7 +19,7 @@ services:
   db:
     container_name: wordpress-db
     image: ghcr.io/linuxserver/mariadb
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: wordpressdb
       MYSQL_USER: exampleuser
