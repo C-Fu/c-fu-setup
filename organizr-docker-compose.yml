@@ -15,4 +15,4 @@ services:
             - TZ=Asia/Kuala_Lumpur
 networks:
   default:
-    name: main_net
+    name: web_net
