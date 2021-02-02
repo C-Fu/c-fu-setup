@@ -74,7 +74,7 @@ cmd=(dialog --separate-output
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
          2  "RClone - mount your GDrive One Drive MEGA AWS WEBDav etc"   off
          3  "Afraid.org - stupidly simple & free DDNS url! (soon!)"      off
-		 4  "[Docker] Portainer - manage containers"                     off
+         4  "[Docker] Portainer - manage containers"                     off
          5  "[Docker] NginxProxyManager - reverse-proxy your containers" off
          6  "[Docker] Organizr - your personal start page"               off
          7  "[Docker] WordPress - biggest site creator"                  off
@@ -84,7 +84,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          11 "[Docker] Jackett - your media download finder"              off
          12 "[Docker] ruTorrent - your Torrent downloader "              off
          13 "[Docker] Navidrome - web-based music player & server"       off
-		 
+         
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
