@@ -10,8 +10,11 @@ services:
       - AUTO_UPDATE=true #optional
       #- RUN_OPTS=<run options here> #optional
     volumes:
-      - ~/jackett/config:/config
-      - ~/downloads:/downloads
+      - $HOME/jackett/config:/config
+      - $HOME/downloads:/downloads
     ports:
       - 9117:9117
     restart: unless-stopped
+networks:
+  default:
+    name: media_net
