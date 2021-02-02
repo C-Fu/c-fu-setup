@@ -22,11 +22,11 @@ sleep 3
 clear
 
 cmd=(dialog --separate-output --checklist "Select options:" 22 76 16)
-options=(1 "Docker & Docker Compose - containerize your applications" off    # any option can be set to default to "on"
-         2 "RClone - mount your cloud storage - GDrive, One Drive, MEGA, AWS, WEBDav, etc" off
-         3 "[Docker] Portainer" off
-         4 "[Docker] NginxProxyManager" off
-         5 "[Docker] Organizr" off
+options=(1 "Docker & Docker Compose" off    # any option can be set to default to "on"
+         2 "RClone - mount your GDrive One Drive MEGA AWS WEBDav etc" off
+         3 "[Docker] Portainer - manage containers" off
+         4 "[Docker] NginxProxyManager - reverse-proxy your containers" off
+         5 "[Docker] Organizr - your personal start page" off
          6 "[Docker] WordPress (Not yet)" off)
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -122,44 +122,46 @@ done
 
 
 
-echo -e "\e[33mALL DONE! Check running containers..."
+echo -e "\e[32mALL DONE! 
+Check running containers..."
 docker ps
 
 if [ instDocker=1 ];then 
-                    echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using 
-                    \e[33mdocker run -d --name something -p hostportno:containerport -v hostdir:containerdir repo/container\e[39m then open up browser at \e[34m$IP:HostPortNo\e[39m" 
+  echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using 
+             \e[33mdocker run -d --name something -p hostportno:containerport -v hostdir:containerdir repo/container\e[39m 
+             then open up browser at \e[34m$IP:HostPortNo\e[39m" 
 fi
 
 if [ instDockerCompose=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[Docker Compose]\e[39m can be run by 
-                    editing your \e[33mdocker-compose.yml\e[39m file, then do 
-                    \e[33mdocker-compose up -d\e[39m to start, or 
-                    \e[33mdocker-compose down --rmi local\e[39m to uninstall and remove container"
+  echo -e "\e[32m[INSTALLED] \e[33m[Docker Compose]\e[39m can be run by 
+             editing your \e[33mdocker-compose.yml\e[39m file, then do 
+             \e[33mdocker-compose up -d\e[39m to start, or 
+             \e[33mdocker-compose down --rmi local\e[39m to uninstall and remove container"
 fi
 
 if [ instRClone=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[RClone]\e[39m can be run by using
-                    \e[33mrclone config\e[39m, and then \e[33mrclone cp\e[39m, \e[33mrclone mv\e[39m, 
-                    \e[33mrclone lsd\e[39m, \e[33mrclone ls\e[39m, \e[33mrclone mount\e[39m."
+  echo -e "\e[32m[INSTALLED] \e[33m[RClone]\e[39m can be run by using
+             \e[33mrclone config\e[39m, and then \e[33mrclone cp\e[39m, \e[33mrclone mv\e[39m, 
+             \e[33mrclone lsd\e[39m, \e[33mrclone ls\e[39m, \e[33mrclone mount\e[39m."
 fi
 
 if [ instPortainer=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[portainer]\e[39m deployed at \e[34m$IP:9000\e[39m."
+  echo -e "\e[32m[INSTALLED] \e[33m[portainer]\e[39m deployed at \e[34m$IP:9000\e[39m."
 fi
 
 if [ instNginxProxy=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.  
-                    Your IP is \e[34m$IP\e[39m.  
-                    Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m   
-                    from inside your router's WebUI page,  usually at   
-                    \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+  echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.  
+             Your IP is \e[34m$IP\e[39m.  
+             Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m   
+             from inside your router's WebUI page,  usually at   
+             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
 fi
 
 if [ instOrganizr=1 ]; then
-                    echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
-                    Port-forward/Add virtual server   
-                    port \e[34m80 to \e[34m$IP:88\e[39m  
-                    from inside your router's WebUI page, usually at  
-                    \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+  echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
+             Port-forward/Add virtual server   
+             port \e[34m80\e[39m to \e[34m$IP:88\e[39m  
+             from inside your router's WebUI page, usually at  
+             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
 fi 
 exit
