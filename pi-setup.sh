@@ -14,35 +14,40 @@
 #######################################
 
 
-IP=`hostname  -I | cut -f1 -d' '`
 clear
 
 echo -e "\e[5m\n\n
 [--------------------------------------]
 [----------- \e[7mPi Setup Script\e[0m-----------]
 [---------------- \e[7mby C-Fu\e[0m--------------]
+[----Make sure to git clone to $HOME/pi-setup!----]
 [--------------------------------------]
 \e[0m"
 
 sleep 2
 clear
-#Clear vars
-instDocker=NO
-instDockerCompose=NO
-instRClone=NO
-instPortainer=NO
-instNginxProxy=NO
-instOrganizr=NO
-instWordPress=NO
-instRadarr=NO
-instSonarr=NO
-instJackett=NO
-instruTorrent=NO
+
+#Reset vars
+instDocker="NO"
+instDockerCompose="NO"
+instRClone="NO"
+instPortainer="NO"
+instNginxProxy="NO"
+instOrganizr="NO"
+instWordpress="NO"
+instRadarr="NO"
+instSonarr="NO"
+instJackett="NO"
+instruTorrent="NO"
 
 #init vars"
+scriptDir="$HOME/pi-setup"
+IP=`hostname  -I | cut -f1 -d' '`
+
 containerName="hello-world"
 containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
 containerRepo=
+
 
 
 cmd=(dialog --separate-output 
@@ -78,24 +83,28 @@ for choice in $choices
 do
     case $choice in
         1)
-            echo -e "\n\n\e[33m[------------------------------------]\n[ Installing Docker & Docker Compose ]\n[------------------------------------]"
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [ Installing Docker & Docker Compose ]
+            [------------------------------------]
+            "
             #Install docker
-            curl -fsSL https://get.docker.com -o get-docker.sh && instDocker=1      || echo -e "Error! Did not get docker script!"                                      && instDocker=0
-            sudo sh get-docker.sh                              && instDocker=1      || echo -e "Error! Did not run script!"                                                 && instDocker=0
+            curl -fsSL https://get.docker.com -o get-docker.sh && instDocker=YES      || echo -e "Error! Did not get docker script!"    && instDocker=NO
+            sudo sh get-docker.sh                              && instDocker=YES      || echo -e "Error! Did not run script!"           && instDocker=NO
             sudo usermod -aG docker pi || sudo usermod -aG docker dietpi #just in case
             #Install docker-compose
             sudo apt install -y libffi-dev libssl-dev 
             sudo apt install -y python3 python3-pip
             sudo apt remove  -y python-configparser #not needed
             echo -e "\e[33mInstalling Docker Compose. Will take some time..."
-            sudo pip3 -v install docker-compose && instDockerCompose=1              || echo -e "Error! Did not install docker-compose!"                                     && instDockerCompose=0
+            sudo pip3 -v install docker-compose && instDockerCompose=YES              || echo -e "Error! Did not install docker-compose!" && instDockerCompose=NO
             echo -e "\n\n"
-            if [ "$instDocker"="1" ]; then
+            if [ "$instDocker"="YES" ]; then
                 echo -e "\e[33m[Docker] install         : DONE!"
             else
                 echo -e "\e[31m[Docker] install         : FAILED!"
             fi
-            if [ "$instDockerCompose"="1" ]; then
+            if [ "$instDockerCompose"="YES" ]; then
                 echo -e "\e[33m[Docker Compose] install : DONE!"
             else
                 echo -e "\e[31m[Docker Compose] install : FAILED!"
@@ -111,9 +120,9 @@ do
             "
             #Install rclone
             echo "\e[33mInstalling rclone..."
-            curl https://rclone.org/install.sh | sudo bash       && instRClone=1    || echo -e "\e[31mError! Did not download RClone! Check your Internet connection! "     && instRClone=0 
+            curl https://rclone.org/install.sh | sudo bash       && instRClone=YES    || echo -e "\e[31mError! Did not download RClone! Check your Internet connection! "     && instRClone=NO 
             echo -e "\n\n"   
-            if [ "$instRClone"="1" ]; then
+            if [ "$instRClone"="YES" ]; then
                 echo -e "\e[33m[RClone] install : DONE!"
             else
                 echo -e "\e[31m[RClone] install : FAILED!"
@@ -134,9 +143,9 @@ do
               -p 8000:8000                                  \
               -p 9000:9000                                  \
                -v /var/run/docker.sock:/var/run/docker.sock \
-               -v portainer_data:/data portainer/portainer-ce && instPortainer=1 || echo -e "\e[31mError! Portainer cannot be installed! "                                  && instPortainer=0
+               -v portainer_data:/data portainer/portainer-ce && instPortainer=YES || echo -e "\e[31mError! Portainer cannot be installed! " && instPortainer=NO
 
-            if [ "$instPortainer"="1" ]; then
+            if [ "$instPortainer"="YES" ]; then
                 echo -e "\e[33m[Portainer] install : DONE!\n\e[33m[Portainer] deployed at $IP:9000"
             else
                 echo -e "\e[31m[Portainer] install : FAILED!"
@@ -150,11 +159,11 @@ do
             [    Installing NginxProxyManager    ]
             [------------------------------------]
             "
-            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            ## Only need to change $containerName and $containerRepo and repeat copy.. hopefully
             containerName="nginx-proxy-manager"
             containerRepo="jc21/"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
-            #set installVar to whatever inst$containerNiceName value is
+            ## Set installVar to whatever inst$containerNiceName value is
             declare -n installVar=inst$containerNiceName
             
             ###Begin###
@@ -208,17 +217,20 @@ do
             "
             ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
             containerName="wordpress"
+            containerName2="mariadb"
             containerRepo=
+            containerRepo2="ghcr.io/linuxserver/"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
             #set installVar to whatever inst$containerNiceName value is
             declare -n installVar=inst$containerNiceName
+            echo -e "Pulling from $containerRepo$containerName..."
             
             ###Begin###
-            docker pull "$containerRepo$containerName" && \
+            docker pull "$containerRepo$containerName" && docker pull "$containerRepo2$containerName2" \ ## WordPress needs two containers!
             echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
-            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            echo -e "\e[33mCreating $containerName container directories from inside $HOME\e[39m"
             mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
-            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cp $scriptDir/$containerName-docker-compose.yml ~/$containerName/docker-compose.yml || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
             cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
             if [ "$installVar"="YES" ]; then
                 echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
@@ -226,6 +238,8 @@ do
                 echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
             declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            instWordpress="YES"
+            echo "instWordpress=$instWordpress"
             sleep 2
             ;;
         7)
@@ -253,7 +267,7 @@ do
             else
                 echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
-            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;          
         8)
@@ -281,7 +295,7 @@ do
             else
                 echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
-            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
         9)
@@ -310,8 +324,46 @@ do
             else
                 echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
-            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
+            ;;
+        10)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [        Installing ruTorrent        ]
+            [------------------------------------]
+            "
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="rutorrent"
+            containerNiceName="ruTorrent"
+            containerRepo="ghcr.io/linuxserver/"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
+        11)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [     Installing afraid.org DDNS     ]
+            [------------------------------------]
+            "
+            
+			sleep 2
             ;;
     esac
 done
@@ -330,7 +382,7 @@ echo "instRClone=        $instRClone"
 echo "instPortainer=     $instPortainer"
 echo "instNginxProxy=    $instNginxProxy"
 echo "instOrganizr=      $instOrganizr"
-echo "instWordPress=     $instWordPress"
+echo "instWordpress=     $instWordpress"
 echo "instRadarr=        $instRadarr"
 echo "instSonarr=        $instSonarr"
 echo "instJackett=       $instJackett"
@@ -342,9 +394,11 @@ echo "instruTorrent=     $instruTorrent"
 ###Docker###
 if [ "instDocker" = "YES" ] ; then 
   echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using 
-             \e[33mdocker run -d --name something -p hostportno:containerport 
-             -v hostdir:containerdir repo/container\e[39m (one line)
-             then open up browser at \e[34m$IP:HostPortNo\e[39m" 
+            \e[33mdocker run -d --name something \\
+            -p hostportno:containerport \\
+            -v hostdir:containerdir \\
+            repo/container\e[39m (one line)
+            then open up browser at \e[34m$IP:HostPortNo\e[39m" 
 fi
 
 ###Docker Compose###
@@ -363,12 +417,12 @@ if [ "instRClone" = "YES" ];then
 fi
 
 ###Portainer###
-if [ "instPortainer" = "YES" ];then
+if [ "$instPortainer" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[portainer]\e[39m deployed at \e[34m$IP:9000\e[39m."
 fi
 
 ###NginxProxyManager###
-if [ "instNginxProxy" = "YES" ];then
+if [ "$instNginxproxymanager" = "YES" ];then
   echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.  
              Your IP is \e[34m$IP\e[39m.  
              Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m   
@@ -377,55 +431,53 @@ if [ "instNginxProxy" = "YES" ];then
 fi
 
 ###Organizr###
-if [ "instOrganizr" = "YES" ]; then
+if [ "$instOrganizr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
-             Port-forward/Add virtual server   
-             port \e[34m80\e[39m to \e[34m$IP:88\e[39m  
+             This should/can be your front page, to access other services like 
+			 WordPress at $IP:8484 and NginxProxyManager WebUI at $IP:181.
+			 Port-forward/Add virtual server   
+             port \e[34m88\e[39m to \e[34m$IP:88\e[39m  
              from inside your router's WebUI page, usually at  
-             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m.
+			 Then use NginxProxyManager to set ssl at http://$IP:88 to your DDNS address.
+			 Free web address at afraid.org"
 fi 
 
 ###WordPress###
-if [ "instWordPress" = "YES" ]; then
+if [ "$instWordpress" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[wordpress]\e[39m deployed at \e[34m$IP:8484\e[39m.   
              Port-forward/Add virtual server   
              port \e[34m8484\e[39m to \e[34m$IP:8484\e[39m  
              from inside your router's WebUI page, usually at  
-             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m.
+             "
 fi 
 
 ###Radarr###
-if [ "instRadarr" = "YES" ]; then
-  echo -e "\e[32m[INSTALLED] \e[33m[Radarr]\e[39m deployed at \e[34m$IP:7878\e[39m.   
-             Port-forward/Add virtual server   
-             port \e[34m7878\e[39m to \e[34m$IP:7878\e[39m  
-             from inside your router's WebUI page, usually at  
-             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+if [ "$instRadarr" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[Radarr]\e[39m deployed at \e[34m$IP:7878\e[39m.
+              Works best with Sonarr and Jackett and a Downloader, like ruTorrent"
 fi
 
 ###Sonarr###
-if [ "instSonarr" = "YES" ]; then
+if [ "$instSonarr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Sonarr]\e[39m deployed at \e[34m$IP:8989\e[39m.   
-             Port-forward/Add virtual server   
-             port \e[34m8989\e[39m to \e[34m$IP:8989\e[39m  
-             from inside your router's WebUI page, usually at  
-             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+             Works best with Sonarr and Jackett and a Downloader, like ruTorrent"
 fi
 
 ###Jackett###
 if [ "$instJackett" = "YES" ]; then
-  echo -e "\e[32m[INSTALLED] \e[33m[Jackett]\e[39m deployed at \e[34m$IP:9117\e[39m."
-else 
-  echo "hi Jackett"   
+  echo -e "\e[32m[INSTALLED] \e[33m[Jackett]\e[39m deployed at \e[34m$IP:9117\e[39m."  
 fi
 
 ###ruTorrent###
 if [ "instruTorrent" = "1" ]; then
-  echo -e "\e[32m[INSTALLED] \e[33m[ruTorrent]\e[39m deployed at \e[34m$IP:8989\e[39m.   
-             Port-forward/Add virtual server   
-             port \e[34m8989\e[39m to \e[34m$IP:8989\e[39m  
-             from inside your router's WebUI page, usually at  
-             \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
+  echo -e "\e[32m[INSTALLED] \e[33m[ruTorrent]\e[39m deployed at \e[34m$IP:580\e[39m.   
+             Port-forward/Add virtual server for these ports:			 
+             \e[34m5000\e[39m  - scgi port
+			 \e[34m56881\e[39m - tcp&udp port for downloading
+			 \e[34m580\e[39m   - WebUI port, not necessary unless you want public access (DANGER!)
+			 Access via web browser at \e[34m$IP:580\e[39m" 
 fi
 
 exit
