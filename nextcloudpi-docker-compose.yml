@@ -2,7 +2,8 @@ version: '3'
 services:
   nextcloudpi:
     container_name: nextcloudpi
-    image: ownyourbits/nextcloudpi-x86
+    image: ownyourbits/nextcloudpi
+    restart: unless-stopped    
     command: "${IP}"
     ports:
      - "480:80"
