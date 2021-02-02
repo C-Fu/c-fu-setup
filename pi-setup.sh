@@ -10,9 +10,9 @@ cmd=(dialog --separate-output --checklist "Select options:" 22 76 16)
 options=(1 "Docker & Docker Compose - containerize your applications" off    # any option can be set to default to "on"
          2 "RClone - mount your cloud storage - GDrive, One Drive, MEGA, AWS, WEBDav, etc" off
          3 "[Docker] Portainer" off
-         4 "[Docker] NginxProxyManager" off)
-         5 "[Docker] Organizr" off)
-         6 "[Docker] WordPress (Not yet)" off)
+         4 "[Docker] NginxProxyManager" off
+         5 "[Docker] Organizr" off
+         6 "[Docker] WordPress (Not yet)" off
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
