@@ -14,7 +14,7 @@ services:
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: wpdb
     volumes:
-      - ~/wordpress/html:/var/www/html
+      - $(PWD)/wordpress/html:/var/www/html
 
   db:
     container_name: wordpress-db
@@ -27,4 +27,4 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
       
     volumes:
-      - db:~/wordpress/mysql
+      - db:$(PWD)/wordpress/mysql
