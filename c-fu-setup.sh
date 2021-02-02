@@ -40,6 +40,7 @@ instSonarr="NO"
 instLidarr="NO"
 instJackett="NO"
 instruTorrent="NO"
+instNavidrome="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
@@ -66,21 +67,24 @@ cmd=(dialog --separate-output
      Lidarr - organize your Music files
      Jackett - organize your media sources
      ruTorrent - Torrent downloader for *arr+Jackett
-	 Afraid.org - set up a quick cron job, get your DDNS url+key first!
+     Navidrome - web-based music player
+     Afraid.org - set up a quick cron job, get your DDNS url+key first!
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
          2  "RClone - mount your GDrive One Drive MEGA AWS WEBDav etc"   off
-         3  "[Docker] Portainer - manage containers"                     off
-         4  "[Docker] NginxProxyManager - reverse-proxy your containers" off
-         5  "[Docker] Organizr - your personal start page"               off
-         6  "[Docker] WordPress - biggest site creator"                  off
-         7  "[Docker] Radarr - your movie organizer "                    off
-         8  "[Docker] Sonarr - your tv shows organizer "                 off
-	     9  "[Docker] Lidarr - your music organizer "                    off
-         10 "[Docker] Jackett - your media download finder"              off
-         11 "[Docker] ruTorrent - your Torrent downloader "              off
-		 12 "Afraid.org - stupidly simple & free DDNS url!" (soon!)      off
+         3  "Afraid.org - stupidly simple & free DDNS url! (soon!)"      off
+		 4  "[Docker] Portainer - manage containers"                     off
+         5  "[Docker] NginxProxyManager - reverse-proxy your containers" off
+         6  "[Docker] Organizr - your personal start page"               off
+         7  "[Docker] WordPress - biggest site creator"                  off
+         8  "[Docker] Radarr - your movie organizer "                    off
+         9  "[Docker] Sonarr - your tv shows organizer "                 off
+         10 "[Docker] Lidarr - your music organizer "                    off
+         11 "[Docker] Jackett - your media download finder"              off
+         12 "[Docker] ruTorrent - your Torrent downloader "              off
+         13 "[Docker] Navidrome - web-based music player & server"       off
+		 
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -142,6 +146,15 @@ do
         3)
             echo -e "\n\n\e[33m
             [------------------------------------]
+            [     Installing afraid.org DDNS     ]
+            [------------------------------------]
+            "
+            #Probably later...
+            sleep 2
+            ;;
+        4)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
             [        Installing Portainer        ]
             [------------------------------------]
             "
@@ -162,7 +175,7 @@ do
             echo -e "\n\n" 
             sleep 2
             ;;
-        4)
+        5)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [    Installing NginxProxyManager    ]
@@ -190,7 +203,7 @@ do
             declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        5)
+        6)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [        Installing Organizr         ]
@@ -218,7 +231,7 @@ do
             declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        6)
+        7)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [        Installing WordPress        ]
@@ -251,7 +264,7 @@ do
             echo "instWordpress=$instWordpress"
             sleep 2
             ;;
-        7)
+        8)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [          Installing Radarr         ]
@@ -279,7 +292,7 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;          
-        8)
+        9)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [          Installing Sonarr         ]
@@ -307,7 +320,7 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        9)
+        10)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [          Installing Lidarr         ]
@@ -335,7 +348,7 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        10)
+        11)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [         Installing Jackett         ]
@@ -364,7 +377,7 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        11)
+        12)
             echo -e "\n\n\e[33m
             [------------------------------------]
             [        Installing ruTorrent        ]
@@ -393,14 +406,34 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
-        12)
+        13)
             echo -e "\n\n\e[33m
             [------------------------------------]
-            [     Installing afraid.org DDNS     ]
+            [        Installing Navidrome        ]
             [------------------------------------]
             "
-            #Probably later...
-			sleep 2
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="navdrome"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerRepo="deluan/"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
             ;;
     esac
 done
@@ -472,13 +505,13 @@ fi
 if [ "$instOrganizr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
              This should/can be your front page, to access other services like 
-			 WordPress at $IP:8484 and NginxProxyManager WebUI at $IP:181.
-			 Port-forward/Add virtual server   
+             WordPress at $IP:8484 and NginxProxyManager WebUI at $IP:181.
+             Port-forward/Add virtual server   
              port \e[34m88\e[39m to \e[34m$IP:88\e[39m  
              from inside your router's WebUI page, usually at  
              \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m.
-			 Then use NginxProxyManager to set ssl at http://$IP:88 to your DDNS address.
-			 Free web address at afraid.org"
+             Then use NginxProxyManager to set ssl at http://$IP:88 to your DDNS address.
+             Free web address at afraid.org"
 fi 
 
 ###WordPress###
@@ -518,11 +551,11 @@ fi
 ###ruTorrent###
 if [ "instruTorrent" = "1" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[ruTorrent]\e[39m deployed at \e[34m$IP:580\e[39m.   
-             Port-forward/Add virtual server for these ports:			 
+             Port-forward/Add virtual server for these ports:            
              \e[34m5000\e[39m  - scgi port
-			 \e[34m56881\e[39m - tcp&udp port for downloading
-			 \e[34m580\e[39m   - WebUI port, not necessary unless you want public access (DANGER!)
-			 Access via web browser at \e[34m$IP:580\e[39m" 
+             \e[34m56881\e[39m - tcp&udp port for downloading
+             \e[34m580\e[39m   - WebUI port, not necessary unless you want public access (DANGER!)
+             Access via web browser at \e[34m$IP:580\e[39m" 
 fi
 
 exit
