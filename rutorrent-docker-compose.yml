@@ -3,6 +3,7 @@ services:
   rutorrent:
     image: ghcr.io/linuxserver/rutorrent
     container_name: rutorrent
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -14,7 +15,6 @@ services:
       - 5000:5000 #scgi port?
       - 56881:51413 #tcp port to download
       - 56881:6881/udp #port forward whatever host port tothe 56881 container port
-    restart: unless-stopped
 networks:
   default:
     name: media_net
