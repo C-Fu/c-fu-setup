@@ -9,8 +9,8 @@ services:
       - TZ=Asia/Kuala_Lumpur
     volumes:
       - data:/config
-      - movies:/movies
-      - $(PWD)/downloads:/downloads
+      - ~/media/Movies:/movies #move from downloads to this permanent folder
+      - ~/downloads:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
