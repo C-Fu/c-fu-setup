@@ -72,8 +72,8 @@ cmd=(dialog --separate-output
      Jackett - organize your media sources
      ruTorrent - Torrent downloader for *arr+Jackett
      Navidrome - web-based music player
-	 Nextcloudpi - awesome office collaboration suite
-	 Overseerr - Request your movies & tv shows from here
+     Nextcloudpi - awesome office collaboration suite
+     Overseerr - Request your movies & tv shows from here
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -89,7 +89,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          11 "[Docker] Jackett - your media download finder"              off
          12 "[Docker] ruTorrent - your Torrent downloader "              off
          13 "[Docker] Navidrome - web-based music player & server"       off
-		 14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
+         14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
          15 "[Docker] Overseerr - media requests management"             off
          )
          
