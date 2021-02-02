@@ -9,8 +9,8 @@ services:
       - TZ=Asia/Kuala_Lumpur
     volumes:
       - data:/config
-      - $(PWD)/media/tvseries:/tv
-      - $(PWD)/downloads:/downloads
+      - ~/media/tvshows:/tv #Move from downloads to this permanent folder
+      - ~/downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
