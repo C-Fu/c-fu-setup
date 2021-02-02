@@ -31,6 +31,7 @@ clear
 instDocker="NO"
 instDockerCompose="NO"
 instRClone="NO"
+instAfraid="NO"
 instPortainer="NO"
 instNginxProxy="NO"
 instOrganizr="NO"
@@ -58,6 +59,7 @@ cmd=(dialog --separate-output
      (WARNING: DO NOT RE-INSTALL DOCKER & DOCKER-COMPOSE THIS WAY!
      Docker - Containerize your apps, it's the future!
      RClone - mount your cloud storage easily
+     Afraid.org - set up a quick cron job, get your DDNS url+key first!
      Portainer - manage your container the pro way
      NginxProxyManager - add ssl to your DDNS!
      Organizr - your personal start page to all of your web apps
@@ -68,7 +70,6 @@ cmd=(dialog --separate-output
      Jackett - organize your media sources
      ruTorrent - Torrent downloader for *arr+Jackett
      Navidrome - web-based music player
-     Afraid.org - set up a quick cron job, get your DDNS url+key first!
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
