@@ -3,7 +3,7 @@ Collection of basic pi setup - docker, portainer, etc.
 Except for docker, all of the containers are cross-platform - x86 and ARM friendly! And are regularly maintained.
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
-# You might want/need to change it, especially the environment parameters. 
+## You might want/need to change it, especially the environment parameters. 
 Example:
 
 
