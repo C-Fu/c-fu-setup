@@ -1,5 +1,6 @@
 # pi-setup
 Collection of basic pi setup - docker, portainer, etc.
+Except for docker, all of the containers are cross-platform - x86 and ARM friendly!
 
 Just run the pi-setup.sh script:
 
