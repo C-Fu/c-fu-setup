@@ -126,19 +126,21 @@ echo -e "\e[33mALL DONE! Check running containers..."
 docker ps
 
 if [ instDocker=1 ];then 
-                    echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using docker run -d --name something -p hostportno:containerport -v hostdir:containerdir repo/container then open up browser at \e[34m$PWD:HostPortNo" 
+                    echo -e "\e[32m[INSTALLED] \e[33m[Docker]\e[39m can be run by using 
+                    \e[33mdocker run -d --name something -p hostportno:containerport -v hostdir:containerdir repo/container\e[39m then open up browser at \e[34m$IP:HostPortNo\e[39m" 
 fi
 
 if [ instDockerCompose=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[Docker Compose]\e[39m can be run by \n
-                    editing your docker-compose.yml file, then do \n
-                    docker-compose up -d to start, or \n
-                    docker-compose down --rmi local to uninstall and remove container"
+                    echo -e "\e[32m[INSTALLED] \e[33m[Docker Compose]\e[39m can be run by 
+                    editing your \e[33mdocker-compose.yml\e[39m file, then do 
+                    \e[33mdocker-compose up -d\e[39m to start, or 
+                    \e[33mdocker-compose down --rmi local\e[39m to uninstall and remove container"
 fi
 
 if [ instRClone=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[RClone]\e[39m can be run by using \n
-                    rclone config, and then rclone cp, rclone lsd, rclone ls, rclone mount."
+                    echo -e "\e[32m[INSTALLED] \e[33m[RClone]\e[39m can be run by using
+                    \e[33mrclone config\e[39m, and then \e[33mrclone cp\e[39m, \e[33mrclone mv\e[39m, 
+                    \e[33mrclone lsd\e[39m, \e[33mrclone ls\e[39m, \e[33mrclone mount\e[39m."
 fi
 
 if [ instPortainer=1 ];then
@@ -146,18 +148,18 @@ if [ instPortainer=1 ];then
 fi
 
 if [ instNginxProxy=1 ];then
-                    echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.\n  
-                    Your IP is \e[34m$IP\e[39m.\n  
-                    Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m \n  
-                    from inside your router's WebUI page,  usually at \n  
+                    echo -e "\e[32m[INSTALLED] \e[33m[nginx-proxy-manager]\e[39m deployed at \e[34m$IP:181\e[39m.  
+                    Your IP is \e[34m$IP\e[39m.  
+                    Port-forward/Add virtual server port 80 and 443 to \e[34m$IP:180\e[39m and \e[34m$IP:1443\e[39m   
+                    from inside your router's WebUI page,  usually at   
                     \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
 fi
 
 if [ instOrganizr=1 ]; then
-                    echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m. \n  
-                    Port-forward/Add virtual server \n  
-                    port \e[34m80 to \e[34m$IP:88\e[39m\n  
-                    from inside your router's WebUI page, usually at\n  
+                    echo -e "\e[32m[INSTALLED] \e[33m[organizr]\e[39m deployed at \e[34m$IP:88\e[39m.   
+                    Port-forward/Add virtual server   
+                    port \e[34m80 to \e[34m$IP:88\e[39m  
+                    from inside your router's WebUI page, usually at  
                     \e[34m192.168.0.1 \e[39mor \e[34m192.168.1.1 \e[39mor \e[34m192.168.0.254\e[39m."
 fi 
 exit
