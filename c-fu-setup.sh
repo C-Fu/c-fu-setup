@@ -422,6 +422,7 @@ echo "instOrganizr=      $instOrganizr"
 echo "instWordpress=     $instWordpress"
 echo "instRadarr=        $instRadarr"
 echo "instSonarr=        $instSonarr"
+echo "instLidarr=        $instLidarr"
 echo "instJackett=       $instJackett"
 echo "instruTorrent=     $instruTorrent"
 
@@ -493,18 +494,25 @@ fi
 ###Radarr###
 if [ "$instRadarr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Radarr]\e[39m deployed at \e[34m$IP:7878\e[39m.
-              Works best with Sonarr and Jackett and a Downloader, like ruTorrent"
+              Works best with Sonarr and Lidarr and Jackett and a Downloader, like ruTorrent"
 fi
 
 ###Sonarr###
 if [ "$instSonarr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Sonarr]\e[39m deployed at \e[34m$IP:8989\e[39m.   
-             Works best with Sonarr and Jackett and a Downloader, like ruTorrent"
+             Works best with Radarr and Lidarr and Jackett and a Downloader, like ruTorrent"
+fi
+
+###Lidarr###
+if [ "$instLidarr" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[Lidarr]\e[39m deployed at \e[34m$IP:8686\e[39m.   
+             Works best with Sonarr and Radarr and Jackett and a Downloader, like ruTorrent"
 fi
 
 ###Jackett###
 if [ "$instJackett" = "YES" ]; then
-  echo -e "\e[32m[INSTALLED] \e[33m[Jackett]\e[39m deployed at \e[34m$IP:9117\e[39m."  
+  echo -e "\e[32m[INSTALLED] \e[33m[Jackett]\e[39m deployed at \e[34m$IP:9117\e[39m.
+             Works best with Sonarr and Radarr and Lidarr and a Downloader, like ruTorrent"  
 fi
 
 ###ruTorrent###
