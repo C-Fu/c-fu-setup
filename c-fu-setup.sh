@@ -24,7 +24,7 @@ echo -e "\e[7m\n\n
 [----------------to start the script!----------------]
 [----------------------------------------------------]
 \e[0m"
-
+apt install dialog
 sleep 3
 clear
 
