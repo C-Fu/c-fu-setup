@@ -29,7 +29,7 @@ echo -e "\e[7m\n\n
 sudo apt install -y dialog
 sudo yum install -y dialog
 sudo pacman -Syu dialog
-apk add dialog
+sudo apk add dialog
 
 sleep 3
 clear
