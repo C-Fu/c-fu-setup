@@ -21,6 +21,7 @@ echo -e "\e[7m\n\n
 [------------------ Pi Setup Script------------------]
 [------------------- \e[7mby C-Fu--------------------]
 [----Make sure to git clone to \$HOME/c-fu-setup!----]
+[----------------to start the script!----------------]
 [----------------------------------------------------]
 \e[0m"
 
@@ -45,6 +46,7 @@ instruTorrent="NO"
 instNavidrome="NO"
 instNextcloudpi="NO"
 instOverseerr="NO"
+instDozzle="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
