@@ -26,6 +26,9 @@ echo -e "\e[7m\n\n
 \e[0m"
 
 #installing prerequisites! Duh shoud've been made available in x86 from the get-go wtf x64! 
+echo -e "Installing pre-requisite(s)... ignore any errors, for now..."
+
+echo -e "Installing dialog..."
 sudo apt install -y dialog
 sudo yum install -y dialog
 sudo pacman -Syu dialog
