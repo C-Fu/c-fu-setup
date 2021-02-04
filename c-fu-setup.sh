@@ -24,7 +24,13 @@ echo -e "\e[7m\n\n
 [----------------to start the script!----------------]
 [----------------------------------------------------]
 \e[0m"
-apt install dialog
+
+#installing prerequisites! Duh shoud've been made available in x86 from the get-go wtf x64! 
+sudo apt install -y dialog
+sudo yum install -y dialog
+sudo pacman -Syu dialog
+apk add dialog
+
 sleep 3
 clear
 
