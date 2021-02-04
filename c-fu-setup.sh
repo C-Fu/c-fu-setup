@@ -34,6 +34,10 @@ sudo yum install -y dialog
 sudo pacman -Syu dialog
 sudo apk add dialog
 
+echo -e "Entering $HOME/c-fu-setup directory..."
+cd $HOME/c-fu-setup
+echo -e "[ C-Fu Setup is loading!"
+
 sleep 3
 clear
 
