@@ -32,6 +32,7 @@ instDocker="NO"
 instDockerCompose="NO"
 instRClone="NO"
 instAfraid="NO"
+instCtop="NO"
 instPortainer="NO"
 instNginxProxy="NO"
 instOrganizr="NO"
@@ -74,6 +75,7 @@ cmd=(dialog --separate-output
      Navidrome - web-based music player
      Nextcloudpi - awesome office collaboration suite
      Overseerr - Request your movies & tv shows from here
+	 Dozzle - web-based & very lightweight docker logs monitor
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -91,6 +93,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          13 "[Docker] Navidrome - web-based music player & server"       off
          14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
          15 "[Docker] Overseerr - media requests management"             off
+		 16 "[Docker] Dozzle - lightweight docker logs web monitoring"   off 
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -499,6 +502,35 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
+        16)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [          Installing Dozzle         ]
+            [------------------------------------]
+            "
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="dozzle"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerRepo="amir20/"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
     esac
 done
 
@@ -522,6 +554,10 @@ echo "instSonarr=        $instSonarr"
 echo "instLidarr=        $instLidarr"
 echo "instJackett=       $instJackett"
 echo "instruTorrent=     $instruTorrent"
+echo "instNavidrome=     $instNavidrome"
+echo "instNextcloudpi=   $instNextcloudpi"
+echo "instOverseerr=     $instOverseerr"
+echo "instDozzle=        $instDozzle"
 
 
 #SCRIPT CHECK AND INFO DISPLAY
@@ -629,6 +665,10 @@ fi
 
 if [ "$instOverseerr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Overseerr]\e[39m deployed at \e[34m$IP:5055\e[39m."  
+fi
+
+if [ "$instDozzle" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[Dozzle]\e[39m deployed at \e[34m$IP:9999\e[39m."  
 fi
 
 exit
