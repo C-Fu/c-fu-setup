@@ -24,6 +24,11 @@ Current software list:
 - Overseerr | Request your movies & tv shows from here
 - Dozzle | Web-based, very lightweight docker logs viewer for all of your containers
 
+| Column 1       | Column 2     | Column 3     |
+| :------------- | :----------: | -----------: |
+|  Cell Contents | More Stuff   | And Again    |
+| You Can Also   | Put Pipes In | Like this \| |
+
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
 ## You might want/need to change it, especially the environment parameters. 
 Example:
