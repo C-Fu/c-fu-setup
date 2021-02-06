@@ -183,19 +183,21 @@ do
             [------------------------------------]
             "
             ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            ##Portainer container changed to portainer-ce, so folder uses $containerAltName
             containerName="portainer-ce"
+            containerAltName="portainer"
             containerRepo="portainer/"
-            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerAltName:0:1})${containerAltName:1}"
             #set installVar to whatever inst$containerNiceName value is
             declare -n installVar=inst$containerNiceName
             
             ###Begin###
             docker pull "$containerRepo$containerName" && \
-            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                      || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
             echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
-            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
-            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
-            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            mkdir ~/$containerAltName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerAltName-docker-compose.yml ~/$containerAltName/docker-compose.yml         || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerAltName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
             if [ "$installVar"="YES" ]; then
                 echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
             else
