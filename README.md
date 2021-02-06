@@ -23,8 +23,9 @@ Current software list:
 | Afraid.org | set up a quick cron job, but get your DDNS url+key first! | Just get your DDNS key and it'll be added to crontab & run every 5 mins |
 | Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone) | localhost.local:4533 |
 | NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing! | hostname.local:44443 to begin setup, https://hostname.local:4443 to start |
-| Overseerr | request your movies & tv shows from here | hostname.local:5055
-| Dozzle | web-based, very lightweight docker logs viewer for all of your containers | hostname.local:9999 |
+| Overseerr | request your movies & tv shows from here | hostname.local:5055/ |
+| Dozzle | web-based, very lightweight docker logs viewer for all of your containers | hostname.local:9999/ |
+| Pi-Hole | Ad-blocker for your whole network | hostname.local:280/ set your nameserver to pi-hole's IP and restart your router |
 
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
