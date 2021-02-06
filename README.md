@@ -27,6 +27,10 @@ Current software list:
 | Dozzle | web-based, very lightweight docker logs viewer for all of your containers | hostname.local:9999/ |
 | Pi-Hole | Ad-blocker for your whole network | hostname.local:280/ set your nameserver to pi-hole's IP and restart your router |
 
+> Note that most/all of the Docker container apps
+> are set to use Asia/Kuala_Lumpur TZ/TimeZone. 
+> Please nano $containerName-docker-compose.yml 
+> before running bash c-fu/c-fu-setup.sh script!
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
 ## You might want/need to change it, especially the environment parameters. 
