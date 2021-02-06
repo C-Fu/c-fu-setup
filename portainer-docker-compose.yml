@@ -13,3 +13,6 @@ services:
       - portainer_data:/data
 volumes:
   portainer_data: 
+networks:
+  default:
+    name: web_net
