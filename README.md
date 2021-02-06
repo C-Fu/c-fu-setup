@@ -6,24 +6,6 @@ Except for docker, all(most) of the containers are cross-platform - x86 and ARM 
 
 Current software list:
 
-- Docker | containerize your apps
-- Docker Compose | easily spin up and down your containers, as well as to help ease migration
-- RClone | mount your cloud storage easily
-- Portainer | manage your container the pro way
-- Nginx Proxy Manager | add ssl to your DDNS url!
-- Organizr | your personal start page to all of your web apps
-- Wordpress | host your blog/site from your house!
-- Radarr | organize your Movie files
-- Sonarr | organize your TVShows files
-- Lidarr | organize your Music files
-- Jackett | organize your media sources
-- ruTorrent | Torrent downloader for *arr+Jackett
-- Afraid.org | set up a quick cron job, but get your DDNS url+key first!
-- Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone)
-- NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing!
-- Overseerr | Request your movies & tv shows from here
-- Dozzle | Web-based, very lightweight docker logs viewer for all of your containers
-
 | Service Name       | Description     | Ports/Command     |
 | :------------- | :----------: | -----------: |
 | Docker | containerize your apps | docker run -d --name something -p hostPort:containerPort -v /host/dir:/container/dir repoName/containerName |
