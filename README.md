@@ -24,9 +24,9 @@ Current software list:
 - Overseerr | Request your movies & tv shows from here
 - Dozzle | Web-based, very lightweight docker logs viewer for all of your containers
 
-| Column 1       | Column 2     | Column 3     |
+| Service Name       | Description     | Ports/Command     |
 | :------------- | :----------: | -----------: |
-|  Cell Contents | More Stuff   | And Again    |
+|  Docker | containerize your apps   | docker run -d --name something -p hostPort:containerPort -v /host/dir:/container/dir repoName/containerName    |
 | You Can Also   | Put Pipes In | Like this \| |
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
