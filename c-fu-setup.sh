@@ -36,7 +36,7 @@ sudo apk add dialog
 
 echo -e "Entering $HOME/c-fu-setup directory..."
 cd $HOME/c-fu-setup
-echo -e "[ C-Fu Setup is loading!"
+echo -e "[ C-Fu Setup is loading! ]"
 
 sleep 3
 clear
