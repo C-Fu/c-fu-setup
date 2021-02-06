@@ -22,6 +22,7 @@ Current software list:
 - Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone)
 - NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing!
 - Overseerr | Request your movies & tv shows from here
+- Dozzle | Web-based, very lightweight docker logs viewer for all of your containers
 
 Once you've downloaded this git repo, be sure to check the corresponding docker-compose.yml file before executing pi-setup.sh. 
 ## You might want/need to change it, especially the environment parameters. 
