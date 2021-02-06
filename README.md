@@ -37,7 +37,7 @@ Current software list:
 | Sonarr | organize your TVShows files | hostname.local:8989/ |
 | Lidarr | organize your Music files | hostname.local:8686/ |
 | Jackett | organize your media sources | hostname.local:9117/ |
-| ruTorrent | torrent downloader for *arr+Jackett | hostname.local:580// port-forward 5000 & 56881tcp & 56881udp |
+| ruTorrent | torrent downloader for \*arr+Jackett | hostname.local:580/ port-forward 5000 & 56881tcp & 56881udp |
 | Afraid.org | set up a quick cron job, but get your DDNS url+key first! | Just get your DDNS key and it'll be added to crontab & run every 5 mins |
 | Navidrome | web-based music player and server, works with ultrasonic (Android) and iSub (iPhone) | localhost.local:4533 |
 | NextCloudPi | awesome web|based office collaboration tool, with cloud storage support & sharing! | hostname.local:44443 to begin setup, https://hostname.local:4443 to start |
