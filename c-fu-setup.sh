@@ -569,7 +569,7 @@ do
 	    ###Caddy has no repo name
             containerName="caddy"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
-            containerRepo=""
+            containerRepo="library/"
             #set installVar to whatever inst$containerNiceName value is
             declare -n installVar=inst$containerNiceName
             
@@ -579,6 +579,8 @@ do
             echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
             mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
             cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+	    ##Additional caddy files
+	    cp Caddyfile $HOME/$containerName/                                                  || echo -e "\e[31m[$containerNiceName] Caddyfile cannot be created.. it doesn't exist?\e[39m"
             cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
             if [ "$installVar"="YES" ]; then
                 echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
