@@ -25,7 +25,8 @@ Current software list:
 | NextCloudPi | awesome web-based office collaboration tool, with cloud storage support & sharing! | hostname.local:44443 to begin setup, https://hostname.local:4443 to start |
 | Overseerr | request your movies & tv shows from here | hostname.local:5055/ |
 | Dozzle | web-based, very lightweight docker logs viewer for all of your containers | hostname.local:9999/ |
-| Pi-Hole | Ad-blocker for your whole network | hostname.local:280/ set your nameserver to pi-hole's IP and restart your router |
+| Caddy | NginxProxyManager alternative, very lightweight, very fast reverse-proxy | Uses Caddyfile, no web-ui, port-forward 80 & 443 to 280 & 2443 in router |
+| **Pi-Hole (soon!)** | Ad-blocker for your whole network | hostname.local:280/ set your nameserver to pi-hole's IP and restart your router |
 
 > Note that most/all of the Docker container apps
 > are set to use Asia/Kuala_Lumpur TZ/TimeZone. 
