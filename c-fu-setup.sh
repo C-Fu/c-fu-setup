@@ -60,6 +60,7 @@ instNavidrome="NO"
 instNextcloudpi="NO"
 instOverseerr="NO"
 instDozzle="NO"
+instCaddy="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
@@ -91,6 +92,7 @@ cmd=(dialog --separate-output
      Nextcloudpi - awesome office collaboration suite
      Overseerr - Request your movies & tv shows from here
      Dozzle - web-based & very lightweight docker logs monitor
+     Caddy - a super-fast reverse-proxy alternative to nginxpm
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -109,6 +111,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          14 "[Docker] NextCloudPi - awesome office collaboration suite"  off
          15 "[Docker] Overseerr - media requests management"             off
          16 "[Docker] Dozzle - lightweight docker logs web monitoring"   off 
+         17 "[Docker] Caddy - VERY lightweight reverse-proxy"            off
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -553,6 +556,35 @@ do
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
             sleep 2
             ;;
+        17)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [          Installing Caddy         ]
+            [------------------------------------]
+            "
+            #instJackett="NO" #temp
+            ###Assign variables and indirect variables###
+            containerName="caddy"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            containerRepo=""
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && \
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
     esac
 done
 
@@ -580,6 +612,7 @@ echo "instNavidrome=     $instNavidrome"
 echo "instNextcloudpi=   $instNextcloudpi"
 echo "instOverseerr=     $instOverseerr"
 echo "instDozzle=        $instDozzle"
+echo "instCaddy=         %instCaddy"
 
 
 #SCRIPT CHECK AND INFO DISPLAY
@@ -680,17 +713,34 @@ if [ "instruTorrent" = "1" ]; then
              Access via web browser at \e[34m$IP:580\e[39m" 
 fi
 
+##NextCloudPi##
 if [ "$instNextcloudpi" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[NextCloudPi]\e[39m deployed at \e[34m$IP:44443\e[39m.
              Visit \e[34m$IP:44443\e[39m to set up your NCP before going to \e[34m$IP:4443\e[39m"  
 fi
 
+##Overseerr##
 if [ "$instOverseerr" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Overseerr]\e[39m deployed at \e[34m$IP:5055\e[39m."  
 fi
 
+##Dozzle##
 if [ "$instDozzle" = "YES" ]; then
   echo -e "\e[32m[INSTALLED] \e[33m[Dozzle]\e[39m deployed at \e[34m$IP:9999\e[39m."  
+fi
+
+##Caddy##
+if [ "$instCaddy" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[Caddy]\e[39m deployed. Set your router to
+             port-forward port 80 and 443 to \e[34m$IP:280\e[39m & \e[34m$IP:2443\e[39m.
+             Caddy uses Caddyfile to configure your reverse-proxy needs, for example:
+             $ cat Caddyfile
+             
+               \e[31myour.ddns.url\e[39m
+               
+               \e[92mreverse_proxy\e[39m \e[34mlocalhost:88\e[39m               \e[90m#Your [Organizr] page as the homepage of \e[34mhttps://your.ddns.url/\e[39m
+               \e[92mreverse_proxy\e[39m \e[34m/web/* localhost:8484\e[39m      \e[90m#Your [WordPress] page at \e[34mhttps://your.ddns.url/web\e[39m
+			   "
 fi
 
 exit
