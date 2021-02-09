@@ -614,7 +614,7 @@ echo "instNavidrome=     $instNavidrome"
 echo "instNextcloudpi=   $instNextcloudpi"
 echo "instOverseerr=     $instOverseerr"
 echo "instDozzle=        $instDozzle"
-echo "instCaddy=         %instCaddy"
+echo "instCaddy=         $instCaddy"
 
 
 #SCRIPT CHECK AND INFO DISPLAY
