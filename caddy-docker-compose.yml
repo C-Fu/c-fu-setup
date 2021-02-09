@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "280:80"
+      - "2443:443"
+    volumes:
+      - $HOME/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - $HOME/caddy/site:/srv
+      - $HOME/caddy/data:/data
+      - $HOME/caddy/config:/config
+networks:
+  default:
+    name: web_net
