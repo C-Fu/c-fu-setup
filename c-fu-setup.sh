@@ -565,7 +565,8 @@ do
             [------------------------------------]
             "
             #instJackett="NO" #temp
-            ###Assign variables and indirect variables###
+            ##Assign variables and indirect variables###
+	    ###Caddy has no repo name
             containerName="caddy"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
             containerRepo=""
@@ -573,7 +574,7 @@ do
             declare -n installVar=inst$containerNiceName
             
             ###Begin###
-            docker pull "$containerRepo$containerName" && \
+            docker pull "$containerName" && \
             echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
             echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
             mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
