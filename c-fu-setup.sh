@@ -61,6 +61,7 @@ instNextcloudpi="NO"
 instOverseerr="NO"
 instDozzle="NO"
 instCaddy="NO"
+instWikijs="NO"
 
 #init vars"
 scriptDir="$HOME/c-fu-setup"
@@ -93,6 +94,7 @@ cmd=(dialog --separate-output
      Overseerr - Request your movies & tv shows from here
      Dozzle - web-based & very lightweight docker logs monitor
      Caddy - a super-fast reverse-proxy alternative to nginxpm
+     WikiJS - Dead simple wiki/documentation server
      " 40 80 61
     )
 options=(1  "Docker & Docker Compose" off    # any option can be set to default to "on"
@@ -112,6 +114,7 @@ options=(1  "Docker & Docker Compose" off    # any option can be set to default 
          15 "[Docker] Overseerr - media requests management"             off
          16 "[Docker] Dozzle - lightweight docker logs web monitoring"   off 
          17 "[Docker] Caddy - VERY lightweight reverse-proxy"            off
+         18 "[Docker] Wiki.JS - Dead simple wiki/documentation site"     off
          )
          
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -216,9 +219,9 @@ do
             [------------------------------------]
             "
             ## Only need to change $containerName and $containerRepo and repeat copy.. hopefully
-			## nginx-proxy-manager uses nginxproxy as the directory
+            ## nginx-proxy-manager uses nginxproxy as the directory
             containerName="nginx-proxy-manager"
-			containerAltName="nginxproxy"
+            containerAltName="nginxproxy"
             containerRepo="jc21/"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
             ## Set installVar to whatever inst$containerNiceName value is
@@ -566,7 +569,7 @@ do
             "
             #instJackett="NO" #temp
             ##Assign variables and indirect variables###
-	    ###Caddy has no repo name
+        ###Caddy has no repo name
             containerName="caddy"
             containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
             containerRepo="library/"
@@ -579,8 +582,8 @@ do
             echo -e "\e[33mCreating container directories from inside $HOME\e[39m"
             mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
             cp $containerName-docker-compose.yml ~/$containerName/docker-compose.yml            || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
-	    ##Additional caddy files
-	    cp Caddyfile $HOME/$containerName/                                                  || echo -e "\e[31m[$containerNiceName] Caddyfile cannot be created.. it doesn't exist?\e[39m"
+        ##Additional caddy files
+        cp Caddyfile $HOME/$containerName/                                                  || echo -e "\e[31m[$containerNiceName] Caddyfile cannot be created.. it doesn't exist?\e[39m"
             cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
             if [ "$installVar"="YES" ]; then
                 echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
@@ -588,6 +591,37 @@ do
                 echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
             fi
             #declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            sleep 2
+            ;;
+        18)
+            echo -e "\n\n\e[33m
+            [------------------------------------]
+            [        Installing WikiJS        ]
+            [------------------------------------]
+            "
+            ##Only need to change $containerName and $containerRepo and repeat copy.. hopefully
+            containerName="wikijs"
+            containerRepo="ghcr.io/linuxserver/"
+            containerNiceName="$(tr '[:lower:]' '[:upper:]' <<< ${containerName:0:1})${containerName:1}"
+            #set installVar to whatever inst$containerNiceName value is
+            declare -n installVar=inst$containerNiceName
+            echo -e "Pulling from $containerRepo$containerName..."
+            
+            ###Begin###
+            docker pull "$containerRepo$containerName" && docker pull "$containerRepo2$containerName2" \ ## WordPress needs two containers!
+            echo -e "\e[33m[$containerNiceName]\e[39m pulled"                                   || echo -e "\e[31m[$containerNiceName] cannot be downloaded!\e[39m"
+            echo -e "\e[33mCreating $containerName container directories from inside $HOME\e[39m"
+            mkdir ~/$containerName && echo -e "\e[33m[$containerNiceName]\e[39m folder created" || echo -e "\e[31m[$containerNiceName] folder cannot be created... it exists?\e[39m"
+            cp $scriptDir/$containerName-docker-compose.yml ~/$containerName/docker-compose.yml || echo -e "\e[31m[$containerNiceName] yml cannot be created... it doesn't exist?\e[39m"
+            cd ~/$containerName && docker-compose up -d && installVar="YES"                     || echo -e "\e[31m[$containerNiceName] container cannot be started! Check docker-compose.yml!\e[39m"
+            if [ "$installVar"="YES" ]; then
+                echo -e "\e[33m[$containerNiceName]\e[39m is UP!\n\e[33m[$containerName]\e[39m deployed!"
+            else
+                echo -e "\e[31m[$containerNiceName] cannot be started! Check the docker-compose file!\e[39m" 
+            fi
+            declare -n installVar=t #some random shit, aka undeclaring? unlinking? I have no idea what I'm doing lel
+            instWikijs="YES"
+            echo "instWikijs=$instWikijs"
             sleep 2
             ;;
     esac
@@ -618,6 +652,7 @@ echo "instNextcloudpi=   $instNextcloudpi"
 echo "instOverseerr=     $instOverseerr"
 echo "instDozzle=        $instDozzle"
 echo "instCaddy=         $instCaddy"
+echo "instWikijs=        $instWikijs"
 
 
 #SCRIPT CHECK AND INFO DISPLAY
@@ -745,7 +780,12 @@ if [ "$instCaddy" = "YES" ]; then
                
                \e[92mreverse_proxy\e[39m \e[34mlocalhost:88\e[39m               \e[90m#Your [Organizr] page as the homepage of \e[34mhttps://your.ddns.url/\e[39m
                \e[92mreverse_proxy\e[39m \e[34m/web/* localhost:8484\e[39m      \e[90m#Your [WordPress] page at \e[34mhttps://your.ddns.url/web\e[39m
-			   "
+               "
+fi
+
+##WikiJS##
+if [ "$instWikijs" = "YES" ]; then
+  echo -e "\e[32m[INSTALLED] \e[33m[WikiJS]\e[39m deployed at \e[34m$IP:3000\e[39m."  
 fi
 
 exit
