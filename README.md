@@ -27,7 +27,7 @@ Current software list:
 | Dozzle | web-based, very lightweight docker logs viewer for all of your containers | hostname.local:9999/ |
 | Caddy | NginxProxyManager alternative, very lightweight, very fast reverse-proxy | Uses Caddyfile, no web-ui, port-forward 80 & 443 to 280 & 2443 in router |
 | **Pi-Hole (soon!)** | Ad-blocker for your whole network | hostname.local:280/ set your nameserver to pi-hole's IP and restart your router |
-| WikiJS | Great wiki or documentation server optimized for speed | hostname.local:3000/ | 
+| WikiJS | (x64 only for now) Great wiki or documentation server optimized for speed | hostname.local:3000/ | 
 
 > Note that most/all of the Docker container apps
 > are set to use Asia/Kuala_Lumpur TZ/TimeZone. 
