@@ -24,7 +24,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: wikijs
-      DB_PASS: hahabontot
+      DB_PASS: passssss
       DB_NAME: wikijs
     restart: unless-stopped
     ports:
